@@ -1,0 +1,17 @@
+//com apoio de um colega
+
+package main;
+
+import controller.MetodosController;
+
+public class Principal {
+	public static void main(String[] args) {
+		MetodosController metodos = new MetodosController();
+
+		System.out.println(metodos.returnSO());
+
+		metodos.callProcess("notepad");
+    metodos.readProcess("notepad");
+	  metodos.killProcess("notepad.exe");
+	}
+}
