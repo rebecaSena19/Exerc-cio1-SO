@@ -1,0 +1,73 @@
+//com apoio
+
+package controller;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class MetodosController {
+
+	public MetodosController() {
+		super();
+	}
+
+	public String returnSO() {
+
+		String os = System.getProperty("os.name"); 
+		String versao = System.getProperty("os.version");
+		String arch = System.getProperty("os.arch"); 
+
+		return os + " " + versao + " " + arch;
+	}
+
+	public void callProcess(String process) {
+		try {
+		Runtime.getRuntime().exec("cmd /c " + process); 
+		Runtime.getRuntime().exec("sudo " + process); 
+			Runtime.getRuntime().exec(process); 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void readProcess(String process) {
+		try {
+			Process p = Runtime.getRuntime().exec(process); 
+			InputStream stream = p.getInputStream();
+			InputStreamReader leitor = new InputStreamReader(stream);
+			BufferedReader saida = new BufferedReader(leitor); 
+			String linha = saida.readLine();
+			while (linha != null) {
+				System.out.println(linha);
+				linha = saida.readLine();
+			}
+			
+			stream.close();
+			leitor.close();
+			saida.close();
+		} 
+    catch (IOException e) 
+    {
+			e.printStackTrace();
+		}
+	}
+	
+	public void killProcess(String param) {
+		String kill = "";
+		int pid = 0;
+		
+		try {
+			pid = Integer.parseInt(param);
+			kill = "TASKKILL /PID " + pid; //mata processo por PID no Windows
+		}catch (NumberFormatException e) {
+			kill = "TASKKILL /IM " + param; //mata processo por nome no Windows
+		}
+		
+		callProcess(kill);
+	}
+
+}
+
